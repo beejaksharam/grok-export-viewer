@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import List, Tuple, Dict, Any
 import markdown as md_lib
 from pygments.formatters import HtmlFormatter
+from tqdm import tqdm  
 
 def clean(name: str) -> str:
     """Sanitize string for use in filenames."""
@@ -33,9 +34,9 @@ def rows(item: Dict[str, Any], idx: int) -> Tuple[str, List[Dict[str, str]]]:
             msgs.append({"sender": resp.get("sender", "").lower(), "text": txt})
     return title, msgs
 
-def export_markdown(conv: List[Dict[str, Any]]) -> Path:
+def export_markdown(conv: List[Dict[str, Any]], output_dir: Path = Path("data/markdown")) -> Path:
     """Export conversations to Markdown files."""
-    out = Path("data/markdown")
+    out = output_dir
     out.mkdir(exist_ok=True, parents=True)
     [f.unlink() for f in out.glob("*.md")]
     for i, itm in enumerate(conv):
@@ -52,15 +53,16 @@ def export_markdown(conv: List[Dict[str, Any]]) -> Path:
     print("✅ Markdown ->", out.resolve())
     return out
 
-def export_html(conv: List[Dict[str, Any]]) -> None:
+def export_html(conv: List[Dict[str, Any]], output_dir: Path = Path("data/html")) -> None:
     """Export conversations to HTML with a searchable index."""
-    md_dir = export_markdown(conv)
-    html_dir = Path("data/html")
+    md_dir = export_markdown(conv, Path("data/markdown"))
+    html_dir = output_dir
     html_dir.mkdir(exist_ok=True, parents=True)
     css = HtmlFormatter().get_style_defs(".codehilite")
     links, search_index = [], []
 
-    for md_f in md_dir.glob("*.md"):
+    md_files = list(md_dir.glob("*.md"))
+    for md_f in tqdm(md_files, desc="Converting Markdown to HTML"):
         title = md_f.stem
         html_f = html_dir / (title + ".html")
         body = md_lib.markdown(
@@ -78,6 +80,7 @@ def export_html(conv: List[Dict[str, Any]]) -> None:
             "file": html_f.name,
             "content": re.sub(r"<[^>]+>", "", body).lower()
         })
+        print(f"✅ {html_f.name} completed\n")
 
     (html_dir / "index.html").write_text(
         f"""<!doctype html>
