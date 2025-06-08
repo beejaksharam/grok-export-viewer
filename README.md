@@ -23,6 +23,24 @@ open data/html/index.html  # macOS (use xdg-open on Linux, start on Windows)
 grok-export-viewer -s data/prod-grok-backend.json -f csv
 ```
 
+## Sample Input JSON
+
+Below is an example structure for prod-grok-backend.json:
+
+```json
+{
+  "conversations": [
+    {
+      "conversation": { "title": "Sample Chat" },
+      "responses": [
+        { "response": { "sender": "user", "message": "Hello" } },
+        { "response": { "sender": "grok", "message": "Hi!" } }
+      ]
+    }
+  ]
+}
+```
+
 ## Features
 
 - Convert Grok JSON exports to multiple formats.

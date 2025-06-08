@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3] - 2025-06-08
+
+### Added
+
+- Robust JSON validation in `sessions` function.
+- Sample input JSON and support section in `README.md`.
+
 ## [0.1.2] - 2025-06-08
 
 ### Changed

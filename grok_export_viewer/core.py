@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import List, Tuple, Dict, Any
 import markdown as md_lib
 from pygments.formatters import HtmlFormatter
-from tqdm import tqdm  
+from tqdm import tqdm
 
 def clean(name: str) -> str:
     """Sanitize string for use in filenames."""
@@ -18,8 +18,10 @@ def clean(name: str) -> str:
 def sessions(json_file: Path) -> List[Dict[str, Any]]:
     """Load and parse Grok JSON export file."""
     try:
-        with json_file.open(encoding="utf-8") as f:
-            return json.load(f).get("conversations", [])
+        data = json.load(json_file.open(encoding="utf-8"))
+        if not isinstance(data.get("conversations"), list):
+            raise ValueError("Invalid JSON format: 'conversations' must be a list")
+        return data["conversations"]
     except (json.JSONDecodeError, IOError) as e:
         raise ValueError(f"Failed to load JSON file: {e}")
 
