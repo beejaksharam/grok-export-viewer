@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.2] - 2025-06-08
+
+### Changed
+
+- Removed email from `pyproject.toml` metadata for privacy.
+
 ## [0.1.1] - 2025-06-08
 
 ### Added

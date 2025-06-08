@@ -4,10 +4,10 @@ build-backend = "hatchling.build"
 
 [project]
 name = "grok-export-viewer"
-version = "0.1.1"
+version = "0.1.2"
 description = "Convert and browse Grok Chat export JSON as Markdown, HTML, CSV, SQLite, and JSON."
 readme = "README.md"
-authors = [{ name = "12suresa", email = "12suresa@gmail.com" }]
+authors = [{ name = "12suresa" }]
 license = { text = "MIT" }
 requires-python = ">=3.8"
 dependencies = [
